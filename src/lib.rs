@@ -138,12 +138,3 @@ impl Drop for Responder {
         self.handle.take().map(|h| h.join());
     }
 }
-
-impl <'a> Drop for Service<'a> {
-    fn drop(&mut self) {
-        let svc = self.responder.services
-            .write().unwrap()
-            .unregister(self.id);
-        self.responder.send_unsolicited(svc, 0, false);
-    }
-}
