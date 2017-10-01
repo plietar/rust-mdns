@@ -1,8 +1,10 @@
 use net2::UdpBuilder;
+#[cfg(not(windows))]
 use net2::unix::UnixUdpBuilderExt;
 use std::io;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr, UdpSocket};
 use super::MDNS_PORT;
+#[cfg(not(windows))]
 use libc;
 
 pub enum Inet {}
@@ -13,6 +15,7 @@ pub trait AddressFamily {
         let addr = SocketAddr::new(Self::any_addr(), MDNS_PORT);
         let builder = Self::socket_builder()?;
         builder.reuse_address(true)?;
+	#[cfg(not(windows))]
         match builder.reuse_port(true) {
             Ok(_) => {},
             // On linux kernel < 3.9 reuse_port is not available. Ignore
