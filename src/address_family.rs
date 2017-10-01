@@ -15,7 +15,7 @@ pub trait AddressFamily {
         let addr = SocketAddr::new(Self::any_addr(), MDNS_PORT);
         let builder = Self::socket_builder()?;
         builder.reuse_address(true)?;
-	#[cfg(not(windows))]
+        #[cfg(not(windows))]
         match builder.reuse_port(true) {
             Ok(_) => {},
             // On linux kernel < 3.9 reuse_port is not available. Ignore
@@ -23,7 +23,7 @@ pub trait AddressFamily {
             // reason the bind() call will fail later.
             #[cfg(target_os = "linux")]
             Err(ref e) if e.raw_os_error() == Some(libc::ENOPROTOOPT) => {},
-            Err(err) => panic!("reuse_port failed: {}", err)
+            Err(err) => Err(err)
         }
         let socket = builder.bind(&addr)?;
         Self::join_multicast(&socket)?;
