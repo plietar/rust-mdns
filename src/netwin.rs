@@ -98,8 +98,7 @@ fn getifaddrs_int() -> io::Result<Vec<InterfaceAddress>> {
         }
 
         let mut adapters_addresses_buffer: Vec<u8> = vec![0; buf_len as usize];
-        let mut adapter_addresses_ptr: *const PIP_ADAPTER_ADDRESSES = 
-             std::mem::transmute(adapters_addresses_buffer.as_mut_ptr());
+        let mut adapter_addresses_ptr = adapters_addresses_buffer.as_mut_ptr() as *const Vec<u8> as *const PIP_ADAPTER_ADDRESSES;
         let result = GetAdaptersAddresses(
             AF_UNSPEC as u32, 
             0,
@@ -111,7 +110,7 @@ fn getifaddrs_int() -> io::Result<Vec<InterfaceAddress>> {
             return Err(io::Error::last_os_error());
         }
 
-        let mut ret = Vec::<InterfaceAddress>::new();
+        let mut ret = vec![];
         while adapter_addresses_ptr != std::ptr::null_mut() {
             let unicast_addresses = get_unicast_addresses((*adapter_addresses_ptr).first_unicast_address)?;
 
