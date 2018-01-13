@@ -1,5 +1,5 @@
 [package]
-name = "mdns"
+name = "mdns-responder"
 version = "0.2.0"
 authors = ["Paul Lietar <paul@lietar.net>"]
 
@@ -18,7 +18,6 @@ net2 = "0.2"
 nix = "0.8"
 rand = "0.3"
 tokio-core = "0.1.1"
-
 dns-parser = { git = "https://github.com/plietar/dns-parser" }
 
 [target.'cfg(windows)'.dependencies]
