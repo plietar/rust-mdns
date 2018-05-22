@@ -85,9 +85,7 @@ impl Responder {
         Ok(responder)
     }
 
-    pub fn with_handle(
-        handle: &Handle,
-    ) -> io::Result<(Responder, Box<Future<Item = (), Error = io::Error> + Send>)> {
+    pub fn with_handle(handle: &Handle) -> io::Result<(Responder, ResponderTask)> {
         let mut hostname = try!(net::gethostname());
         if !hostname.ends_with(".local") {
             hostname.push_str(".local");
