@@ -1,5 +1,5 @@
 [package]
-name = "mdns"
+name = "mdns-responder"
 version = "0.2.0"
 authors = ["Paul Lietar <paul@lietar.net>"]
 
